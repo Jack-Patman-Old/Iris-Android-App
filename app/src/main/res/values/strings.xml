@@ -2,5 +2,6 @@
     <string name="app_name">Iris News</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="news_categories">Categories</string>
+    <color name="placeholder_color">#6699FF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

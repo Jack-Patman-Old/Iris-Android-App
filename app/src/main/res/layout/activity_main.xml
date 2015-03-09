@@ -4,12 +4,64 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
-        android:layout_marginTop="75dp"
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:text="Placeholder"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:background="@color/placeholder_color"
+        android:gravity="center"
+        android:id="@+id/txtCategory" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/next_category"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/txtCategory"
+        android:id="@+id/imgNext"
+        android:contentDescription="nextArticle"
+        android:longClickable="false" />
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/previous_category"
+        android:id="@+id/imgPrev"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/txtCategory"
+        android:contentDescription="previousArticle" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPrev"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/txtCategory"
+        android:background="@android:color/transparent"
+        
+        />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnNext"
+        android:layout_alignBottom="@+id/txtCategory"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/btnPrev"
+        android:layout_toEndOf="@+id/btnPrev"
+        android:background="@android:color/transparent"
+        />
+
 </RelativeLayout>
