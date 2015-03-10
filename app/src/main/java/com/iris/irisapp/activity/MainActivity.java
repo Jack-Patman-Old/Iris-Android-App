@@ -3,6 +3,7 @@ package com.iris.irisapp.activity;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,72 +75,21 @@ public class MainActivity extends Activity {
             newsCategoryCard.setBackgroundColor(Color.parseColor(category.getCategoryColour()));
             newsCategoryCard.setText(category.getCategoryName());
 
-            List<NewsHeadline> headlines = getCategoryArticles(categoryId);
+            List<NewsHeadline> headlines = getCategoryArticles(categoryId, 0);
             // loadHeadlineCards();
         }
     }
 
-    private List<NewsHeadline> getCategoryArticles(int categoryId)
+    private List<NewsHeadline> getCategoryArticles(int categoryId, int lastIndice)
     {
-        final String ARTICLE_SCRIPT_URL = "http://91.212.182.221/~jackpatm/load_processed_articles.php";
+
         DbAccessor db = new DbAccessor();
 
-        List<ProcessedArticle> articles = null;
-        try {
-            articles = (List<ProcessedArticle>) db.execute(new Object[]{ARTICLE_SCRIPT_URL}).get();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        } catch (ExecutionException e)
-        {
-            e.printStackTrace();
-        }
-
-        return groupArticles(articles, categoryId);
-    }
-
-    private List<NewsHeadline> groupArticles(List<ProcessedArticle> articles, int categoryId)
-    {
-        List<String> groupedArticleUrls = new ArrayList<>();
+        List<Integer> articleIds = db.GetNextArticleIds(categoryId, lastIndice);
         List<NewsHeadline> headlines = new ArrayList<>();
-
-        for (ProcessedArticle article: articles)
+        for(int indice: articleIds)
         {
-            if (article.getCategoryId()!= categoryId)
-            {
-                continue;
-            }
-
-            if (groupedArticleUrls.contains(article.getUrl()))
-            {
-                continue;
-            }
-
-            else
-            {
-                for (ProcessedArticle comparisonArticle: articles)
-                {
-                    NewsHeadline headline = new NewsHeadline();
-                    headline.setHeadline(article.getHeadline());
-
-                    if (comparisonArticle.getCategoryId() != categoryId)
-                    {
-                        continue;
-                    }
-                    else if (comparisonArticle.getHeadline().equals(article.getHeadline()))
-                    {
-                        groupedArticleUrls.add(comparisonArticle.getUrl());
-
-                        NewsArticle groupedArticle = new NewsArticle();
-                        groupedArticle.setArticleUrl(comparisonArticle.getUrl());
-
-                        headline.addOutlet(groupedArticle);
-                        headlines.add(headline);
-//                        groupedArticle.setOutletAcronym(comparisonArticle.);
-                    }
-                }
-            }
-
+            headlines.add(db.LoadArticle(indice));
         }
 
         return headlines;

@@ -1,6 +1,10 @@
 package com.iris.irisapp.db;
 
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.iris.irisapp.feed.NewsArticle;
+import com.iris.irisapp.feed.NewsHeadline;
 
 import org.json.JSONObject;
 
@@ -15,60 +19,42 @@ import java.util.List;
 /**
  * Created by Jack on 21/02/2015.
  */
-public class DbAccessor extends AsyncTask
+public class DbAccessor
 {
-
-    @Override
-    protected Object doInBackground(Object[] params)
+    public List<Integer> GetNextArticleIds(int categoryId, int currentArticleIndex)
     {
-        List<ProcessedArticle> articles = new ArrayList<>();
-
         try {
-            URL articlesScript = new URL(params[0].toString());
-            URLConnection yc = articlesScript.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-            String line;
-            StringBuilder sb = new StringBuilder();
+            final String GET_PROCESSED_ARTICLES_IDS_URL = "http://91.212.182.221/~jackpatm/get_processed_article_ids.php?lastarticleindex=" + currentArticleIndex + "&categoryid=" + categoryId;
 
-            while ((line = in.readLine()) != null)
-            {
-                sb.append(line + "\n");
-            }
+            ArticleIdAccessor accessor = new ArticleIdAccessor();
+            List<Integer> articleIds = (List<Integer>) accessor.execute(new Object[]{GET_PROCESSED_ARTICLES_IDS_URL}).get();
 
-            String[] jsonArticles = sb.toString().split("(?<=\\})");
-
-            JSONObject object = new JSONObject(sb.toString());
-
-            if (jsonArticles != null && jsonArticles.length > 0)
-            {
-                for (String jsonArticle : jsonArticles)
-                {
-                    if (jsonArticle == null || jsonArticle.isEmpty() || jsonArticle.equals("\n"))
-                    {
-                        continue;
-                    }
-
-                    JSONObject parsedArticle = new JSONObject(jsonArticle);
-                    ProcessedArticle article = new ProcessedArticle();
-                    article.setHeadline(parsedArticle.getString("Headline"));
-                    article.setUrl(parsedArticle.getString("Url"));
-                    article.setCategoryId(parsedArticle.getInt("CategoryId"));
-
-                    String date = parsedArticle.getString("PublicationDate");
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-dd-MM");
-                    article.setPublicationDate(dateFormatter.parse(date));
-
-                    articles.add(article);
-                }
-            }
-
-
-            in.close();
+            return articleIds;
         }
         catch (Exception e)
         {
+            Log.e("IRIS EXCEPTION", "Exception encountered attempting to load list of ArticleIds, exception was"+e);
         }
 
-        return articles;
+        return null;
+    }
+
+    public NewsHeadline LoadArticle(int articleId)
+    {
+        try
+        {
+            final String GET_PROCESSED_ARTICLES_URL = "http://91.212.182.221/~jackpatm/load_processed_article.php?requestedarticleid=" + articleId;
+
+            ArticleAccessor accessor = new ArticleAccessor();
+            NewsHeadline headline = (NewsHeadline) accessor.execute(new Object[]{GET_PROCESSED_ARTICLES_URL}).get();
+
+            return headline;
+        }
+        catch (Exception e)
+        {
+            Log.e("IRIS EXCEPTION", "Exception encountered attempting to load Article, exception was"+e);
+        }
+
+        return null;
     }
 }
