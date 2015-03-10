@@ -64,4 +64,14 @@
         android:background="@android:color/transparent"
         />
 
+    <ListView
+        android:id="@android:id/list"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtCategory"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:choiceMode="none" />
 </RelativeLayout>
