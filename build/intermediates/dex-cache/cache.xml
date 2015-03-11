@@ -16,6 +16,13 @@
         <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\gson-2.3.1-2156b89390be07cd1b056053a3053ba1ff7bb7d1.jar" />
     </item>
     <item
+        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\it.sephiroth.android.library.fork.slideexpandable\slideexpandable\1.0.3.1\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e16df45e956819fe13ceb0e15345a3643c897902">
+        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\classes-c39ca33bf8683e8ed67f5c2a692608d73b3cbb71.jar" />
+    </item>
+    <item
         jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"

@@ -1,8 +1,12 @@
 package com.iris.irisapp.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends ListActivity {
     private NewsCategory currentCategory;
+    private List<NewsHeadline> loadedHeadlines;
     Button btnPreviousCategory;
     Button btnNextCategory;
     TextView newsCategoryCard;
@@ -46,13 +51,16 @@ public class MainActivity extends ListActivity {
 
 
         headlinesList = (ListView) findViewById(android.R.id.list);
-        headlinesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        headlinesList.setOnItemClickListener(
+        new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+            public void onItemClick(AdapterView<?> arg0, View arg1, int selectedIndex, long arg3)
             {
                 //args2 is the listViews Selected index
-                // Load Headline<args2>;
+                NewsHeadline headline = loadHeadline(selectedIndex);
+
+                displayHeadlineOutlets(headline);
             }
         });
 
@@ -82,6 +90,44 @@ public class MainActivity extends ListActivity {
 
     }
 
+
+    private NewsHeadline loadHeadline(int selectedIndex)
+    {
+        return (loadedHeadlines.get(selectedIndex));
+    }
+
+
+    private void displayHeadlineOutlets(NewsHeadline headline)
+    {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Preferred Outlet");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
+        for (NewsArticle outlet: headline.getOutlets())
+        {
+            arrayAdapter.add(outlet.getArticleUrl());
+        }
+        builder.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.setAdapter(arrayAdapter,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String strName = arrayAdapter.getItem(which);
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(strName));
+                        startActivity(browserIntent);
+                    }
+                });
+        builder.show();
+    }
+
     private void loadCategory(int categoryId)
     {
         NewsCategory category = NewsCategory.getCategoryById(categoryId);
@@ -93,9 +139,9 @@ public class MainActivity extends ListActivity {
             newsCategoryCard.setBackgroundColor(Color.parseColor(category.getCategoryColour()));
             newsCategoryCard.setText(category.getCategoryName());
 
-            List<NewsHeadline> stories = getCategoryArticles(categoryId, 0);
+            loadedHeadlines = getCategoryArticles(categoryId, 0);
 
-            for (NewsHeadline story: stories)
+            for (NewsHeadline story: loadedHeadlines)
             {
                 headlines.add(story.getHeadline());
             }
@@ -105,9 +151,8 @@ public class MainActivity extends ListActivity {
 
             headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, headlinesArr));
         }
-
-
     }
+
 
     private List<NewsHeadline> getCategoryArticles(int categoryId, int lastIndice)
     {
