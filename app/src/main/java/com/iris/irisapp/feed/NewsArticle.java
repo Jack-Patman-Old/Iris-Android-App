@@ -9,12 +9,12 @@ public class NewsArticle
 {
     private int id;
 
-    private String outletAcronym;
+    private int outletId;
     private String articleUrl;
 
-    public NewsArticle(String acronym, String url)
+    public NewsArticle(int outletId, String url)
     {
-        this.outletAcronym = acronym;
+        this.outletId = outletId;
         this.articleUrl = url;
     }
 
@@ -30,12 +30,12 @@ public class NewsArticle
         this.id = id;
     }
 
-    public String getOutletAcronym() {
-        return outletAcronym;
+    public int getOutletId() {
+        return outletId;
     }
 
-    public void setOutletAcronym(String outletAcronym) {
-        this.outletAcronym = outletAcronym;
+    public void setOutletId(int outletId) {
+        this.outletId = outletId;
     }
 
     public String getArticleUrl() {

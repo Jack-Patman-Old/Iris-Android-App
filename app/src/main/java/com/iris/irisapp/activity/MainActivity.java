@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.iris.irisapp.db.ProcessedArticle;
 import com.iris.irisapp.feed.NewsArticle;
 import com.iris.irisapp.feed.NewsCategory;
 import com.iris.irisapp.feed.NewsHeadline;
+import com.iris.irisapp.feed.NewsOutlet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +89,6 @@ public class MainActivity extends ListActivity {
         });
 
         loadCategory(WORLD_NEWS_CATEGORY_ID);
-
     }
 
 
@@ -97,16 +98,23 @@ public class MainActivity extends ListActivity {
     }
 
 
-    private void displayHeadlineOutlets(NewsHeadline headline)
+    private void displayHeadlineOutlets(final NewsHeadline headline)
     {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle("Preferred Outlet");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
-        for (NewsArticle outlet: headline.getOutlets())
+        for (NewsArticle article: headline.getOutlets())
         {
-            arrayAdapter.add(outlet.getArticleUrl());
+            NewsOutlet outlet = NewsOutlet.getOutletById(article.getOutletId());
+
+            if (outlet != null)
+            {
+                Drawable image = getResources().getDrawable(outlet.getOutletIconId());
+                arrayAdapter.add(outlet.getOutletActual());
+            }
         }
+
         builder.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
 
@@ -120,8 +128,8 @@ public class MainActivity extends ListActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String strName = arrayAdapter.getItem(which);
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(strName));
+                        String selectedHeadlineUrl = headline.getOutlets().get(which).getArticleUrl();
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(selectedHeadlineUrl));
                         startActivity(browserIntent);
                     }
                 });
@@ -143,13 +151,21 @@ public class MainActivity extends ListActivity {
 
             for (NewsHeadline story: loadedHeadlines)
             {
-                headlines.add(story.getHeadline());
+                if (story.getHeadline() != null) {
+                    headlines.add(story.getHeadline());
+                }
             }
 
             String[] headlinesArr = new String[headlines.size()];
             headlinesArr = headlines.toArray(headlinesArr);
-
-            headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, headlinesArr));
+            if (headlinesArr.length > 0)
+            {
+                headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, headlinesArr));
+            }
+            else
+            {
+                headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{":( No news today. Sorry!"}));
+            }
         }
     }
 

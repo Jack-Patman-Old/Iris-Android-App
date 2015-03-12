@@ -66,8 +66,9 @@ public class ArticleAccessor extends AsyncTask
                         headline.setPublicationDate(dateFormatter.parse(date));
                     }
 
+                    int outletId = parsedArticle.getInt("OutletId");
                     String url = parsedArticle.getString("Url");
-                    headline.addOutlet(new NewsArticle("", url));
+                    headline.addOutlet(new NewsArticle(outletId, url));
                 }
             }
 
