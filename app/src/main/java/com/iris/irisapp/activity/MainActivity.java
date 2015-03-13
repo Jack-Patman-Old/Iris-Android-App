@@ -1,27 +1,19 @@
 package com.iris.irisapp.activity;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iris.irisapp.R;
-import com.iris.irisapp.activity.adapters.OutletListAdapter;
+import com.iris.irisapp.activity.components.HeadlinesList;
 import com.iris.irisapp.db.DbAccessor;
-import com.iris.irisapp.feed.NewsArticle;
 import com.iris.irisapp.feed.NewsCategory;
 import com.iris.irisapp.feed.NewsHeadline;
-import com.iris.irisapp.feed.NewsOutlet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +21,10 @@ import java.util.List;
 
 public class MainActivity extends ListActivity {
     private NewsCategory currentCategory;
-    private List<NewsHeadline> loadedHeadlines;
-    Button btnPreviousCategory;
-    Button btnNextCategory;
-    TextView newsCategoryCard;
-    ListView headlinesList;
+    private Button btnPreviousCategory;
+    private Button btnNextCategory;
+    private TextView newsCategoryCard;
+    private HeadlinesList headlinesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,21 +38,9 @@ public class MainActivity extends ListActivity {
         newsCategoryCard = (TextView) findViewById(R.id.txtCategory);
 
 
-        headlinesList = (ListView) findViewById(android.R.id.list);
-        headlinesList.setOnItemClickListener(
-        new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int selectedIndex, long arg3)
-            {
-                //args2 is the listViews Selected index
-                NewsHeadline headline = loadHeadline(selectedIndex);
+        ListView headlineView = (ListView) findViewById(android.R.id.list);
+        headlinesList = new HeadlinesList(this, headlineView);
 
-                if (headline != null) {
-                    displayHeadlineOutlets(headline);
-                }
-            }
-        });
 
         // Add button listener for previous category selection
         btnPreviousCategory = (Button) findViewById(R.id.btnPrev);
@@ -89,70 +68,6 @@ public class MainActivity extends ListActivity {
     }
 
 
-    private NewsHeadline loadHeadline(int selectedIndex)
-    {
-        if (loadedHeadlines != null & loadedHeadlines.size() > 0)
-        {
-            return (loadedHeadlines.get(selectedIndex));
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    private void displayHeadlineOutlets(final NewsHeadline headline)
-    {
-        List<NewsOutlet> outlets = new ArrayList<>();
-
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("Select Preferred Outlet");
-
-        for (NewsArticle article: headline.getOutlets())
-        {
-            NewsOutlet outlet = NewsOutlet.getOutletById(article.getOutletId());
-
-            if (outlet != null)
-            {
-                outlets.add(outlet);
-            }
-        }
-
-        final OutletListAdapter arrayAdapter = new OutletListAdapter(this, outlets);
-
-        builder.setNegativeButton("cancel",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.setAdapter(arrayAdapter,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        if (headline != null) {
-                            String url = sanitizeUrl(headline.getOutlets().get(which).getArticleUrl());
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                            startActivity(browserIntent);
-                        }
-                    }
-                });
-        builder.show();
-    }
-
-    private String sanitizeUrl(String url)
-    {
-        String sanitizedUrl = url;
-        sanitizedUrl = sanitizedUrl.replace("\n", "");
-        sanitizedUrl = sanitizedUrl.replace("\t", "");
-
-        return sanitizedUrl;
-    }
 
     private void loadCategory(int categoryId)
     {
@@ -165,9 +80,9 @@ public class MainActivity extends ListActivity {
             newsCategoryCard.setBackgroundColor(Color.parseColor(category.getCategoryColour()));
             newsCategoryCard.setText(category.getCategoryName());
 
-            loadedHeadlines = getCategoryArticles(categoryId, 0);
+            headlinesList.setLoadedHeadlines(getCategoryArticles(categoryId, 0));
 
-            for (NewsHeadline story: loadedHeadlines)
+            for (NewsHeadline story: headlinesList.getLoadedHeadlines())
             {
                 if (story.getHeadline() != null) {
                     headlines.add(story.getHeadline());
@@ -178,11 +93,11 @@ public class MainActivity extends ListActivity {
             headlinesArr = headlines.toArray(headlinesArr);
             if (headlinesArr.length > 0)
             {
-                headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, headlinesArr));
+                headlinesList.getHeadlinesList().setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, headlinesArr));
             }
             else
             {
-                headlinesList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{":( No news today. Sorry!"}));
+                headlinesList.getHeadlinesList().setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{":( No news today. Sorry!"}));
             }
         }
     }

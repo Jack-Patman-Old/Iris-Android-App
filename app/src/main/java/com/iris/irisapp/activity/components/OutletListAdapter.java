@@ -1,4 +1,4 @@
-package com.iris.irisapp.activity.adapters;
+package com.iris.irisapp.activity.components;
 
 import android.content.Context;
 import android.view.LayoutInflater;
