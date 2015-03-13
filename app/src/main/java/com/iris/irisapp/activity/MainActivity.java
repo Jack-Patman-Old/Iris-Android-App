@@ -1,6 +1,5 @@
 package com.iris.irisapp.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -9,9 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,7 +17,6 @@ import android.widget.TextView;
 
 import com.iris.irisapp.R;
 import com.iris.irisapp.db.DbAccessor;
-import com.iris.irisapp.db.ProcessedArticle;
 import com.iris.irisapp.feed.NewsArticle;
 import com.iris.irisapp.feed.NewsCategory;
 import com.iris.irisapp.feed.NewsHeadline;
@@ -29,7 +24,6 @@ import com.iris.irisapp.feed.NewsOutlet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ListActivity {
@@ -62,7 +56,9 @@ public class MainActivity extends ListActivity {
                 //args2 is the listViews Selected index
                 NewsHeadline headline = loadHeadline(selectedIndex);
 
-                displayHeadlineOutlets(headline);
+                if (headline != null) {
+                    displayHeadlineOutlets(headline);
+                }
             }
         });
 
@@ -94,7 +90,14 @@ public class MainActivity extends ListActivity {
 
     private NewsHeadline loadHeadline(int selectedIndex)
     {
-        return (loadedHeadlines.get(selectedIndex));
+        if (loadedHeadlines != null & loadedHeadlines.size() > 0)
+        {
+            return (loadedHeadlines.get(selectedIndex));
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -104,6 +107,7 @@ public class MainActivity extends ListActivity {
         builder.setTitle("Preferred Outlet");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
+
         for (NewsArticle article: headline.getOutlets())
         {
             NewsOutlet outlet = NewsOutlet.getOutletById(article.getOutletId());
@@ -127,13 +131,25 @@ public class MainActivity extends ListActivity {
                 new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String selectedHeadlineUrl = headline.getOutlets().get(which).getArticleUrl();
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(selectedHeadlineUrl));
-                        startActivity(browserIntent);
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if (headline != null) {
+                            String url = sanitizeUrl(headline.getOutlets().get(which).getArticleUrl());
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            startActivity(browserIntent);
+                        }
                     }
                 });
         builder.show();
+    }
+
+    private String sanitizeUrl(String url)
+    {
+        String sanitizedUrl = url;
+        sanitizedUrl = sanitizedUrl.replace("\n", "");
+        sanitizedUrl = sanitizedUrl.replace("\t", "");
+
+        return sanitizedUrl;
     }
 
     private void loadCategory(int categoryId)
