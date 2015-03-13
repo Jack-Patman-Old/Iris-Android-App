@@ -2,6 +2,7 @@ package com.iris.irisapp.activity.components;
 
 import android.R;
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -14,9 +15,6 @@ import com.iris.irisapp.feed.NewsHeadline;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jack on 13/03/2015.
- */
 public class HeadlinesList implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
 
     private Context context;
@@ -113,7 +111,6 @@ public class HeadlinesList implements AbsListView.OnScrollListener, AdapterView.
         }
     }
 
-    // Getters, setters
     public ListView getHeadlinesListView() {
         return headlinesListView;
     }

@@ -6,19 +6,24 @@ import android.widget.TextView;
 
 import com.iris.irisapp.feed.NewsCategory;
 
-
+/**
+ * Created by Jack on 13/03/2015.
+ */
 public class CategoryCard
 {
     private Context context;
     private TextView newsCategoryCard;
     private NewsCategory currentCategory;
     private HeadlinesList headlinesList;
+    private final int WORLD_NEWS_CATEGORY_ID = 2;
 
     public CategoryCard(Context context, TextView newsCategoryCard, HeadlinesList headlinesList)
     {
         this.context = context;
         this.newsCategoryCard = newsCategoryCard;
         this.headlinesList = headlinesList;
+
+        loadCategory(WORLD_NEWS_CATEGORY_ID);
     }
 
     public void loadCategory(int categoryId)
