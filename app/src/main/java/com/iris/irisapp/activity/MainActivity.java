@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iris.irisapp.R;
+import com.iris.irisapp.activity.adapters.OutletListAdapter;
 import com.iris.irisapp.db.DbAccessor;
 import com.iris.irisapp.feed.NewsArticle;
 import com.iris.irisapp.feed.NewsCategory;
@@ -103,10 +104,10 @@ public class MainActivity extends ListActivity {
 
     private void displayHeadlineOutlets(final NewsHeadline headline)
     {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("Preferred Outlet");
+        List<NewsOutlet> outlets = new ArrayList<>();
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Select Preferred Outlet");
 
         for (NewsArticle article: headline.getOutlets())
         {
@@ -114,10 +115,11 @@ public class MainActivity extends ListActivity {
 
             if (outlet != null)
             {
-                Drawable image = getResources().getDrawable(outlet.getOutletIconId());
-                arrayAdapter.add(outlet.getOutletActual());
+                outlets.add(outlet);
             }
         }
+
+        final OutletListAdapter arrayAdapter = new OutletListAdapter(this, outlets);
 
         builder.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
