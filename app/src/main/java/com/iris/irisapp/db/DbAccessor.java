@@ -1,18 +1,10 @@
 package com.iris.irisapp.db;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.iris.irisapp.feed.NewsArticle;
 import com.iris.irisapp.feed.NewsHeadline;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,40 +13,46 @@ import java.util.List;
  */
 public class DbAccessor
 {
-    public List<Integer> GetNextArticleIds(int categoryId, int currentArticleIndex)
-    {
+    public List<NewsHeadline> loadArticles(int categoryId, int rowNumber) {
+        List<Integer> articleIds = getNextArticleIds(categoryId, rowNumber);
+        List<NewsHeadline> headlines = getArticlesById(categoryId, articleIds);
+
+        return headlines;
+    }
+
+    public List<Integer> getNextArticleIds(int categoryId, int rowNumber) {
         try {
-            final String GET_PROCESSED_ARTICLES_IDS_URL = "http://91.212.182.221/~jackpatm/get_processed_article_ids.php?lastarticleindex=" + currentArticleIndex + "&categoryid=" + categoryId;
+            final String GET_PROCESSED_ARTICLES_IDS_URL = "http://91.212.182.221/~jackpatm/get_processed_article_ids.php?lastarticleindex=" + rowNumber + "&categoryid=" + categoryId;
 
             ArticleIdAccessor accessor = new ArticleIdAccessor();
             List<Integer> articleIds = (List<Integer>) accessor.execute(new Object[]{GET_PROCESSED_ARTICLES_IDS_URL}).get();
 
             return articleIds;
-        }
-        catch (Exception e)
-        {
-            Log.e("IRIS EXCEPTION", "Exception encountered attempting to load list of ArticleIds, exception was"+e);
+        } catch (Exception e) {
+            Log.e("IRIS EXCEPTION", "Exception encountered attempting to load list of ArticleIds, exception was" + e);
         }
 
         return null;
     }
 
-    public NewsHeadline LoadArticle(int articleId)
-    {
-        try
-        {
-            final String GET_PROCESSED_ARTICLES_URL = "http://91.212.182.221/~jackpatm/load_processed_article.php?requestedarticleid=" + articleId;
+    private List<NewsHeadline> getArticlesById(int categoryId, List<Integer> articleIds) {
+        List<NewsHeadline> headlines = new ArrayList<>();
 
-            ArticleAccessor accessor = new ArticleAccessor();
-            NewsHeadline headline = (NewsHeadline) accessor.execute(new Object[]{GET_PROCESSED_ARTICLES_URL}).get();
+        for (int articleId : articleIds) {
+            try {
+                final String GET_PROCESSED_ARTICLES_URL = "http://91.212.182.221/~jackpatm/load_processed_article.php?requestedarticleid=" + articleId;
 
-            return headline;
+                ArticleAccessor accessor = new ArticleAccessor();
+                NewsHeadline headline = (NewsHeadline) accessor.execute(new Object[]{GET_PROCESSED_ARTICLES_URL}).get();
+                headline.setHeadlineId(articleId);
+                headline.setCategoryId(categoryId);
+                headlines.add(headline);
+
+            } catch (Exception e) {
+                Log.e("IRIS EXCEPTION", "Exception encountered attempting to load Article, exception was" + e);
+            }
         }
-        catch (Exception e)
-        {
-            Log.e("IRIS EXCEPTION", "Exception encountered attempting to load Article, exception was"+e);
-        }
 
-        return null;
+        return headlines;
     }
 }

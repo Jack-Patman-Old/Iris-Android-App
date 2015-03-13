@@ -9,16 +9,36 @@ import java.util.List;
  */
 public class NewsHeadline
 {
+    private int headlineId;
     private String headline;
     private Date publicationDate;
     private int categoryId;
-    private List<NewsArticle> outlets;
+    private List<NewsArticle> articles;
 
     public NewsHeadline()
     {
-        outlets = new ArrayList<>();
+        articles = new ArrayList<>();
     }
 
+    public List<NewsOutlet> getNewsOutlets ()
+    {
+        List<NewsOutlet> outlets = new ArrayList<>();
+
+        for (NewsArticle article: articles)
+        {
+            outlets.add(NewsOutlet.getOutletById(article.getOutletId()));
+        }
+
+        return outlets;
+    }
+
+    public int getHeadlineId() {
+        return headlineId;
+    }
+
+    public void setHeadlineId(int headlineId) {
+        this.headlineId = headlineId;
+    }
 
     public int getCategoryId() {
         return categoryId;
@@ -43,13 +63,13 @@ public class NewsHeadline
         this.headline = headline;
     }
 
-    public List<NewsArticle> getOutlets() {
-        return outlets;
+    public List<NewsArticle> getArticles() {
+        return articles;
     }
 
-    public void setOutlets(List<NewsArticle> outlets) {
-        this.outlets = outlets;
+    public void setArticles(List<NewsArticle> articles) {
+        this.articles = articles;
     }
 
-    public void addOutlet(NewsArticle outlet) {this.outlets.add(outlet);}
+    public void addOutlet(NewsArticle outlet) {this.articles.add(outlet);}
 }
