@@ -40,7 +40,7 @@ public class MainActivity extends ListActivity {
             public void onClick(View v)
             {
                 int prevCategoryId = category.getCurrentCategory().getCategoryId()-1;
-                category.loadCategory(prevCategoryId);
+                category.loadCategory( category.getCurrentCategory().getCategoryId(), prevCategoryId);
             }
         });
 
@@ -52,7 +52,7 @@ public class MainActivity extends ListActivity {
             public void onClick(View v)
             {
                 int nextCategoryId = category.getCurrentCategory().getCategoryId()+1;
-                category.loadCategory(nextCategoryId);
+                category.loadCategory( category.getCurrentCategory().getCategoryId(), nextCategoryId);
             }
         });
 

@@ -97,10 +97,6 @@ public class HeadlinesList implements AbsListView.OnScrollListener, AdapterView.
 
         if (headlineText.size() > 0)
         {
-            for (int i = 0; i < 50; i++)
-            {
-                headlineText.add("a");
-            }
             if (headlinesListView.getAdapter() == null) {
                 headlinesListView.setAdapter(new HeadlineListAdapter(context, R.layout.simple_list_item_1, headlineText));
             }
