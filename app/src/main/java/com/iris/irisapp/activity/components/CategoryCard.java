@@ -30,7 +30,7 @@ public class CategoryCard
     {
         NewsCategory category = NewsCategory.getCategoryById(categoryId);
 
-        if (newsCategoryCard != null && category != null && category.getCategoryId() != 0)
+        if (newsCategoryCard != null && category != null && category.getCategoryId() >=2)
         {
             currentCategory = category;
             newsCategoryCard.setBackgroundColor(Color.parseColor(category.getCategoryColour()));

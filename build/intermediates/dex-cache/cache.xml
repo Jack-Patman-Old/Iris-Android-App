@@ -2,46 +2,39 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-c40b67e90019f635e363549ad3f983acaeb05121.jar" />
+        <dex dex="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-6d7b1de0b00dca593ec31a558f9fcdf47b6ea74c.jar" />
     </item>
     <item
-        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\libs\gson-2.3.1.jar"
+        jar="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\gson-2.3.1-2156b89390be07cd1b056053a3053ba1ff7bb7d1.jar" />
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\pre-dexed\debug\classes-d75d12332b8300282d33f6bd6eadeba314ceeb96.jar" />
     </item>
     <item
-        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\it.sephiroth.android.library.fork.slideexpandable\slideexpandable\1.0.3.1\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e16df45e956819fe13ceb0e15345a3643c897902">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\classes-c39ca33bf8683e8ed67f5c2a692608d73b3cbb71.jar" />
-    </item>
-    <item
-        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jar="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\classes-612e65a3fdf32203fd0432445db30dc3a3f940fb.jar" />
+        <dex dex="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\pre-dexed\debug\classes-cf32fb92bc8e381e281d07ad70e1f3d363188d9f.jar" />
     </item>
     <item
         jar="C:\Users\Jack\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-a60eb4b3781b1534e4672a20e1079920ac9cd35c.jar" />
+        <dex dex="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-a60eb4b3781b1534e4672a20e1079920ac9cd35c.jar" />
     </item>
     <item
-        jar="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jar="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\libs\gson-2.3.1.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Jack\Documents\GitHub\IrisApp\app\build\intermediates\pre-dexed\debug\classes-69608c18c7961c4c73991e93ae8cef84c1c92b9f.jar" />
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="C:\Users\Jack\Documents\GitHub\Iris-Android-App\app\build\intermediates\pre-dexed\debug\gson-2.3.1-a8def8db805645093d90b886624dbaf34dfca902.jar" />
     </item>
 
 </items>
